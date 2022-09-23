@@ -1,0 +1,1 @@
+(()=>{"use strict";var n=function(n,t,c,o){var e=t*n+c,r=e%o;this.seed=n,this.generator="(".concat(t,"(").concat(n,") + ").concat(c,") mod ").concat(o," = ").concat(e," mod ").concat(o),this.numberResult=r,this.numberRandom=r/o},t=function(t,c,o,e,r){for(var a=[],s=4,u=0;u<100;u++){var i=new n(s,7,7,12);s=i.numberResult,a.push(i)}return a}();console.log(t)})();
