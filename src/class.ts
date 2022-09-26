@@ -1,4 +1,5 @@
-export class Result
+import { getMiddleNumber } from "./aux"
+export class CongruentialResult
 {
     seed: number
     generator: string
@@ -15,4 +16,24 @@ export class Result
         this.numberRandom = result / m
     }
 }
+
+export class SquaredResult 
+{
+    seed: number
+    generator: number
+    numberResult: number
+    numberRandom: number
+
+    constructor(seed: number)
+    {
+        let preResult:number = seed * seed
+        let result: number = getMiddleNumber(preResult)
+        this.seed = seed
+        this.generator = preResult
+        this.numberResult = result
+        this.numberRandom = result / 1000
+    }
+
+}
+
 

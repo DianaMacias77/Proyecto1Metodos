@@ -1,6 +1,6 @@
-import { Result } from './class'
-import { linealCongruential } from './formulas'
+import { CongruentialResult, SquaredResult } from './class'
+import { linealCongruential, middleSquare } from './formulas'
 
-const results: Result[] = linealCongruential(4,7,7,12,100)
+const results: SquaredResult[] =  middleSquare(3547, 10)
 
 console.log(results)
