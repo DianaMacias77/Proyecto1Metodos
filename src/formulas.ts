@@ -27,3 +27,5 @@ export function middleSquare(x0: number, n:number) : SquaredResult[]
 
     return results
 }
+
+
