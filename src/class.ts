@@ -1,4 +1,4 @@
-import { getMiddleNumber } from "./aux"
+import { getMiddleNumber} from './aux'
 export class CongruentialResult
 {
     seed: number
@@ -16,6 +16,15 @@ export class CongruentialResult
         this.numberRandom = result / m
     }
 }
+
+export class MixedCongruentialResult 
+{
+    completesRule1: boolean
+    completesRule2: boolean
+    completesRule3: boolean
+    result: CongruentialResult[]
+}
+
 
 export class SquaredResult 
 {

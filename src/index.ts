@@ -1,7 +1,7 @@
-import { CongruentialResult, SquaredResult } from './class'
-import { linealCongruential, middleSquare } from './formulas'
+import { CongruentialResult, MixedCongruentialResult, SquaredResult } from './class'
+import { linealCongruential, middleSquare, mixedLinealCongruential } from './formulas'
 import { paintSquaredResult } from './view'
 
-const results: SquaredResult[] =  middleSquare(3547, 100)
+const results: MixedCongruentialResult = mixedLinealCongruential(1, 5, 3, 16, 10)
 
-paintSquaredResult(results)
+console.log(results)

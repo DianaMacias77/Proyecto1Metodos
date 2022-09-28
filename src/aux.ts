@@ -16,3 +16,61 @@ export function getMiddleNumber(n: number)
     
     return middleNumber
 }
+
+
+export function isPrimeRelative(a: number, b: number)
+{
+    let gcd = getGCD(a, b)
+    return gcd == 1
+}
+
+function getGCD(a: number, b: number):number
+{
+    if(b == 0){
+        return a
+    }else{
+        return getGCD(b, a % b)
+    }
+}
+
+export function isOnlyMDivisibleByPrime(m: number, a:number) : boolean
+{
+    let isMDivisible:boolean = false
+    let primes = getPrimes(m)
+    primes.forEach(prime => {
+        if((m % prime == 0) && ((a-1) % prime == 0)){
+            isMDivisible = true
+        }
+    });
+    return isMDivisible
+}
+
+export function isOnlyMDivisibleByFour(m: number, a:number) : boolean
+{
+    let isMDivisible:boolean = false
+    if((m % 4 == 0) && ((a-1) % 4 == 0)){
+        isMDivisible = true
+    };
+    return isMDivisible
+}
+
+function getPrimes(n: number): number[]
+{
+    let primes: number[] = []
+    for(let i = 2; i <= n; i++){
+        if(isPrime(i)){
+            primes.push(i)
+        }
+    }
+    return primes
+}
+
+function isPrime(n: number): boolean{
+    let isPrime = true
+    for(let i = 2; i < n; i++){
+        if(n % i == 0){
+            isPrime = false
+        }
+    }
+    return isPrime
+}
