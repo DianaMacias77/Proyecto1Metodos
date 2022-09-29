@@ -15,7 +15,7 @@ export function linealCongruential(x0: number, a: number, c: number, m: number, 
     return result
 }
 
-export function mixedLinealCongruential(x0: number, a: number, c: number, m: number, n: number) : MixedCongruentialResult
+export function mixedCongruential(x0: number, a: number, c: number, m: number, n: number) : MixedCongruentialResult
 {
     let result: MixedCongruentialResult = new MixedCongruentialResult()
     let seed: number = x0
@@ -43,4 +43,18 @@ export function middleSquare(x0: number, n:number) : SquaredResult[]
     return results
 }
 
+
+export function multiplicationCongruential(x0: number, a: number, m: number, n: number) : CongruentialResult[]
+{
+    let result: CongruentialResult[] = []
+    let seed = x0
+
+    for(let i = 0; i < n; i++){
+        let res: CongruentialResult = new CongruentialResult(seed, a, 0, m)
+        seed = res.numberResult
+        result.push(res)
+    }
+
+    return result
+}
 
