@@ -1,33 +1,5 @@
-import { CongruentialResult, MixedCongruentialResult, SquaredResult } from './class'
+import { CongruentialInput, CongruentialResult, MixedCongruentialResult, SquaredResult, CombinedCongruentialResult } from './class'
 import { isPrimeRelative, isOnlyMDivisibleByPrime, isOnlyMDivisibleByFour } from './aux'
-
-export function linealCongruential(x0: number, a: number, c: number, m: number, n: number) : CongruentialResult[]
-{
-    let result: CongruentialResult[] = []
-    let seed = x0
-
-    for(let i = 0; i < n; i++){
-        let res: CongruentialResult = new CongruentialResult(seed, a, c, m)
-        seed = res.numberResult
-        result.push(res)
-    }
-
-    return result
-}
-
-export function mixedCongruential(x0: number, a: number, c: number, m: number, n: number) : MixedCongruentialResult
-{
-    let result: MixedCongruentialResult = new MixedCongruentialResult()
-    let seed: number = x0
-
-    result.completesRule1 = isPrimeRelative(a, m)
-    result.completesRule2 = isOnlyMDivisibleByPrime(m, a)
-    result.completesRule3 = isOnlyMDivisibleByFour(m, a)
-
-    result.result = linealCongruential(seed, a, c, m, n)
-
-    return result
-}
 
 export function middleSquare(x0: number, n:number) : SquaredResult[] 
 {
@@ -44,17 +16,69 @@ export function middleSquare(x0: number, n:number) : SquaredResult[]
 }
 
 
-export function multiplicationCongruential(x0: number, a: number, m: number, n: number) : CongruentialResult[]
+export function linealCongruential(input:CongruentialInput, n: number) : CongruentialResult[]
 {
     let result: CongruentialResult[] = []
-    let seed = x0
 
     for(let i = 0; i < n; i++){
-        let res: CongruentialResult = new CongruentialResult(seed, a, 0, m)
-        seed = res.numberResult
+        let res: CongruentialResult = new CongruentialResult(input)
+        input.seed = res.numberResult
         result.push(res)
     }
 
     return result
 }
 
+export function mixedCongruential(input:CongruentialInput, n: number) : MixedCongruentialResult
+{
+    let result: MixedCongruentialResult = new MixedCongruentialResult()
+
+    result.completesRule1 = isPrimeRelative(input.a, input.m)
+    result.completesRule2 = isOnlyMDivisibleByPrime(input.m, input.a)
+    result.completesRule3 = isOnlyMDivisibleByFour(input.m, input.a)
+
+    result.result = linealCongruential(input, n)
+
+    return result
+}
+
+
+
+
+export function multiplicationCongruential(input:CongruentialInput, n: number) : CongruentialResult[]
+{
+    let result: CongruentialResult[] = []
+    input.c = 0
+
+    for(let i = 0; i < n; i++){
+        let res: CongruentialResult = new CongruentialResult(input)
+        input.seed = res.numberResult
+        result.push(res)
+    }
+
+    return result
+}
+
+export function combinedCongruential(inputs:CongruentialInput[], n: number) : CombinedCongruentialResult[]
+{
+    let finalResult: CombinedCongruentialResult[] = []
+    let congruentialResults: CongruentialResult[][] = []
+
+    for(let i = 0; i < inputs.length; i++){
+        congruentialResults.push(multiplicationCongruential(inputs[i], n))
+    }
+    
+    //Loop the second index and then change the first index
+    // Save in an array the results with the same second index
+    for(let i = 0; i < n; i++){
+        let results: CongruentialResult[] = []
+        
+        for(let j = 0; j < congruentialResults.length; j++){
+            results.push(congruentialResults[j][i])
+        }
+
+        finalResult.push(new CombinedCongruentialResult(results, inputs[0].m))
+    }
+    
+    return finalResult
+}

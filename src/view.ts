@@ -1,4 +1,4 @@
-import { SquaredResult } from "./class";
+import { SquaredResult, CongruentialResult } from "./class";
 
 export function paintSquaredResult(results : SquaredResult[]) : void{
     results.forEach(res => {
@@ -8,5 +8,14 @@ export function paintSquaredResult(results : SquaredResult[]) : void{
         document.body.appendChild(element)
     });
     
+}
 
+export function paintCongruentialResult(results : CongruentialResult[]) : void{
+    results.forEach(res => {
+        let element = document.createElement("p")
+        let elementText = document.createTextNode(res.numberResult.toString())
+        element.appendChild(elementText)
+        document.body.appendChild(element)
+    });
+    
 }
