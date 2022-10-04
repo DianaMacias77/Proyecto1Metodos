@@ -82,3 +82,10 @@ export function combinedCongruential(inputs:CongruentialInput[], n: number) : Co
     
     return finalResult
 }
+
+export function chiSquared(randomNumbers:number[]){
+    randomNumbers = randomNumbers.sort()
+    let range = randomNumbers[randomNumbers.length - 1] - randomNumbers[0]
+    let k = Math.floor(1 + 3.322 * Math.log10(randomNumbers.length))
+    
+}
