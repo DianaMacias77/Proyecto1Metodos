@@ -14,7 +14,7 @@ export class SquaredResult
         this.seed = seed
         this.generator = preResult
         this.numberResult = result
-        this.numberRandom = result / 1000
+        this.numberRandom = result / 10000
     }
 
 }
@@ -26,7 +26,7 @@ export class CongruentialInput
     public c: number
     public m: number
 
-    constructor(seed: number, a: number, c: number = 0, m: number){
+    constructor(seed: number, a: number, c: number, m: number){
         this.seed = seed
         this.a = a
         this.c = c
@@ -76,14 +76,24 @@ export class CombinedCongruentialResult
         let generatorString = ""
 
         for(let i = 0; i < inputs.length; i++){
-            generatorString += `${inputs[i].numberResult} +`
+            generatorString += `((${inputs[i].numberResult}*${Math.pow(-1, i)}) +`
             res += inputs[i].numberResult * Math.pow(-1, i)
         }
 
+        this.generator = generatorString.slice(0, -1) + `)mod ${m1} = ${res} mod ${m1}`
         this.numberResult = res % (m1 - 1)
         this.numberRandom = this.numberResult / (m1 - 1)
 
     }
 }
 
+export class ChiSquaredInterval{
+    public min: number
+    public max: number
+    public fo: number
+    public fe: number
+    public c: number
+    public values: number[]
+    public probability: number
 
+}

@@ -35,21 +35,29 @@ function getGCD(a: number, b: number):number
 
 export function isOnlyMDivisibleByPrime(m: number, a:number) : boolean
 {
-    let isMDivisible:boolean = false
+    let isMDivisible:boolean = true
     let primes = getPrimes(m)
     primes.forEach(prime => {
-        if((m % prime == 0) && ((a-1) % prime == 0)){
-            isMDivisible = true
+        if(a > prime){
+            if(m % prime == 0){
+                if((a-1) % prime != 0){
+                    isMDivisible = false
+                }
+                
+            }
         }
+        
     });
     return isMDivisible
 }
 
 export function isOnlyMDivisibleByFour(m: number, a:number) : boolean
 {
-    let isMDivisible:boolean = false
-    if((m % 4 == 0) && ((a-1) % 4 == 0)){
-        isMDivisible = true
+    let isMDivisible:boolean = true
+    if((m % 4) == 0){
+        if((a-1) % 4 != 0){
+            isMDivisible = false
+        }
     };
     return isMDivisible
 }

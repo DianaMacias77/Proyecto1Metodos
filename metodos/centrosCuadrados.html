@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Centros Cuadrados</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+        <link rel="stylesheet" href="../css/styles.css">
+    </head>
+    <body>
+        <div class="col-12 col-lg-6 mx-auto my-16 px-1 py-4">
+            <h1 >Método de Centros Cuadrados</h1>
+            <form class="card" name="" action="javascript:middleSquaresHandler()">
+                <h4>Agrega valores para probar el metodo: </h4>
+                <p>Recuerde que x0 debe ser mayor que cero (enteros)</p>
+                <div class="form-floating">
+                    <input type="x0" class="form-control" id="seed" placeholder="15">
+                    <label for="x0">X0 (valor semilla)</label>
+                </div>
+                <div class="form-floating">
+                    <input type="n" class="form-control" id="n" placeholder="ejemplo. 10">
+                    <label for="n">N (Cantidad de números a generar)</label>
+                </div>
+                <div class="chekbox custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="defaultUnchecked">
+                    <label class="custom-control-label" for="defaultUnchecked">Medir con Chi Cuadrada</label>
+                </div>
+                <div class="chekbox custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="defaultUnchecked">
+                    <label class="custom-control-label" for="defaultUnchecked">Medir con Kolmogorov Smirnov</label>
+                </div>
+                <input type="submit" class="btn-submit" value="Calcular"></input>
+            </form>
+            <a class="link" href="../index.html">Volver al menú</a>
+        </div>
+        <!--AQUI SE PONE LA VARIABLE SI SE VALIDO Y FUNCIONA O NO-->
+
+        <div class="col-12 col-lg-10 mx-auto my-16 px-1 py-4" id="result">
+            <h4>Resultado</h4>
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">i</th>
+                        <th scope="col">Xn</th>
+                        <th scope="col">Generador</th>
+                        <th scope="col">Xn+1</th>
+                        <th scope="col">Rn</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+        
+    </body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="../js/main.js"></script>
+</html>
