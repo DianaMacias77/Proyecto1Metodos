@@ -1,4 +1,4 @@
-import { SquaredResult, CongruentialResult, MixedCongruentialResult, CombinedCongruentialResult, ChiSquaredInterval } from "./class";
+import { SquaredResult, CongruentialResult, MixedCongruentialResult, CombinedCongruentialResult, ChiSquaredInterval, kolmgorovSmirnovResult } from "./class";
 
 export function paintSquaredResult(results : SquaredResult[]) : void{
 
@@ -241,12 +241,26 @@ export function paintCombinedCongruentialResult(results : CombinedCongruentialRe
     });
 }
 
+export function paintCombinedPeriod(mArray: number[]){
+    let period:number = 1
+    let periodMultiplicationString:string = ""
+    mArray.forEach( (m, index) => {
+        period *= (m -1)
+        periodMultiplicationString += `(${m} - 1) ${index != (mArray.length -1) ? '*' : ''} `
+    })
+
+    period /= mArray.length
+
+    document.getElementById("period").innerHTML = `El periodo es: <strong>(${periodMultiplicationString}) / ${mArray.length} = ${period}</strong>`
+}
+
 
 export function paintChiResult(interval: ChiSquaredInterval[], calcChiResult: number, theoricalChiResult: number){
 
     let result = calcChiResult < theoricalChiResult
 
     document.getElementById("chiTableBody").innerHTML = "";
+
 
     interval.forEach( (int, index) => {
         let row = document.createElement("tr")
@@ -300,5 +314,63 @@ export function paintChiResult(interval: ChiSquaredInterval[], calcChiResult: nu
     let resultText:string = `<span class="${result ? "green" : "red"}"> &#11044; </span> <strong>${calcChiResult.toFixed(4)} ${result ? "<" : "≰"} ${theoricalChiResult.toFixed(4)}</strong> `
     resultFinal.innerHTML = resultText
     document.getElementById("chiConclusion").appendChild(resultFinal)
+
+}
+
+
+export function paintKolmogorovResult(results:kolmgorovSmirnovResult[], dPlus: number, dMinus : number, theoricalResult: number) 
+{
+    let biggerD = dPlus > dMinus ? dPlus : dMinus
+    let result = biggerD < theoricalResult
+
+    document.getElementById("kolmogorovTableBody").innerHTML = "";
+
+    results.forEach( (res, index) => {
+        let row = document.createElement("tr")
+
+        let indexCol = document.createElement("td")
+        let indexText = document.createTextNode((index + 1).toString())
+        indexCol.appendChild(indexText)
+        row.appendChild(indexCol)
+
+        let randomCol = document.createElement("td")
+        let randomText = document.createTextNode(res.randomNumber.toString())
+        randomCol.appendChild(randomText)
+        row.appendChild(randomCol)
+
+        let theoricalCol = document.createElement("td")
+        let theoricalText = document.createTextNode(res.theoricalProbability.toString())
+        theoricalCol.appendChild(theoricalText)
+        row.appendChild(theoricalCol)
+
+        let randomMinusTheoCol = document.createElement("td")
+        let randomMinusTheoText = document.createTextNode(res.randomMinusTheorical.toFixed(4).toString())
+        randomMinusTheoCol.appendChild(randomMinusTheoText)
+        row.appendChild(randomMinusTheoCol)
+
+        let theoMinusRandom = document.createElement("td")
+        let theoMinusRandomText = document.createTextNode(res.theoricalMinusRandom.toFixed(4).toString())
+        theoMinusRandom.appendChild(theoMinusRandomText)    
+        row.appendChild(theoMinusRandom)
+
+        document.getElementById("kolmogorovTableBody").appendChild(row)
+    })
+
+    document.getElementById("kolmogorovConclusion").innerHTML = "";
+
+    let resultCalc = document.createElement("p")
+    let resultCalcText = document.createTextNode(`La D Mayor de entre ${dMinus.toFixed(4)} y ${dPlus.toFixed(4)} es: ${biggerD.toFixed(4)}`)
+    resultCalc.appendChild(resultCalcText)
+    document.getElementById("kolmogorovConclusion").appendChild(resultCalc)
+
+    let resultTheo = document.createElement("p")
+    let resultTheoText = document.createTextNode(`El resultado de Kolmogorov-Smirnov en función de probabilidad úniforme Teórico es: ${theoricalResult.toFixed(4)}`)
+    resultTheo.appendChild(resultTheoText)
+    document.getElementById("kolmogorovConclusion").appendChild(resultTheo)
+
+    let resultFinal = document.createElement("h4")
+    let resultText:string = `<span class="${result ? "green" : "red"}"> &#11044; </span> <strong>${biggerD.toFixed(4)} ${result ? "<" : "≰"} ${theoricalResult.toFixed(4)}</strong> `
+    resultFinal.innerHTML = resultText
+    document.getElementById("kolmogorovConclusion").appendChild(resultFinal)
 
 }

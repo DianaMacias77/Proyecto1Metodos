@@ -1,7 +1,7 @@
 import { CongruentialInput, CongruentialResult, MixedCongruentialResult, CombinedCongruentialResult ,SquaredResult } from './class'
-import { linealCongruential, middleSquare, mixedCongruential, multiplicationCongruential, combinedCongruential, chiSquared } from './formulas'
-import { paintSquaredResult, paintCongruentialResult, paintMixedCongruentialResult, paintCombinedCongruentialResult, paintChiResult } from './view'
-import { chiSquaredAt } from './aux'
+import { linealCongruential, middleSquare, mixedCongruential, multiplicationCongruential, combinedCongruential, chiSquared, kolmgorovSmirnov } from './formulas'
+import { paintSquaredResult, paintCongruentialResult, paintMixedCongruentialResult, paintCombinedCongruentialResult, paintCombinedPeriod, paintChiResult, paintKolmogorovResult } from './view'
+import { chiSquaredAt, kolmogorovAt } from './aux'
 
 
 //const input = new CongruentialInput(5, 3, 0, 11)
@@ -29,6 +29,15 @@ function middleSquaresHandler(){
 
   let results:SquaredResult[] = middleSquare(seed, n)
 
+  if(checkIfChiSquaredChecked()){
+    validateChiSquared(results.map(x => x.numberRandom))    
+  }
+
+  if(checkIfKolmogorovSmirnovChecked()){
+    validateKolmogorovSmirnov(results.map(x => x.numberRandom))
+  }
+
+
   paintSquaredResult(results)
 }
 
@@ -46,6 +55,11 @@ function congruentialHandler(){
   if(checkIfChiSquaredChecked()){
     validateChiSquared(results.map(x => x.numberRandom))    
   }
+
+  if(checkIfKolmogorovSmirnovChecked()){
+    validateKolmogorovSmirnov(results.map(x => x.numberRandom))
+  }
+
 
   paintCongruentialResult(results)
 }
@@ -75,6 +89,14 @@ function congruentialMultiplicationHandler(){
 
     let results:CongruentialResult[] = multiplicationCongruential(input, n)
 
+    if(checkIfChiSquaredChecked()){
+      validateChiSquared(results.map(x => x.numberRandom))    
+    }
+  
+    if(checkIfKolmogorovSmirnovChecked()){
+      validateKolmogorovSmirnov(results.map(x => x.numberRandom))
+    }  
+
     paintCongruentialResult(results)
 }
 
@@ -94,7 +116,18 @@ function combinedCongruentialHandler(){
 
     if(seed.length === k && a.length === k && m.length === k){
       let results:CombinedCongruentialResult[] = combinedCongruential(inputs, n)
+
+      if(checkIfChiSquaredChecked()){
+        validateChiSquared(results.map(x => x.numberRandom))    
+      }
+    
+      if(checkIfKolmogorovSmirnovChecked()){
+        validateKolmogorovSmirnov(results.map(x => x.numberRandom))
+      }
+
+      paintCombinedPeriod(m)
       paintCombinedCongruentialResult(results)
+
     }else{
         alert("All the arrays must be the same length as k")
     }
@@ -105,6 +138,11 @@ function checkIfChiSquaredChecked():boolean{
   return chiSquaredCheck
 }
 
+function getChiProbability() : number{
+  let chiProbability = parseFloat((document.getElementById("chiProbability") as HTMLInputElement).value)
+  return chiProbability
+}
+
 function validateChiSquared(numbers:number[]){
 
   let chiResult = chiSquared(numbers)
@@ -113,13 +151,32 @@ function validateChiSquared(numbers:number[]){
 
   paintChiResult(chiResult.intervals, chiResult.chiSquaredRes, chiDistResult)
 
-  //alert(`Chi Squared Result: ${chiResult.chiSquaredRes} Chi Squared At: ${chiDistResult} Result: ${result}`)
 }
 
-function getChiProbability(){
-  let chiProbability = parseFloat((document.getElementById("chiProbability") as HTMLInputElement).value)
-  return chiProbability
+
+
+function checkIfKolmogorovSmirnovChecked():boolean{
+  let kolmogorovSmirnovCheck = (document.getElementById("kolmogorovCheck") as HTMLInputElement).checked
+  return kolmogorovSmirnovCheck
 }
+
+function getKolmogorovProbability(){
+  let kolmogorovProbability = parseFloat((document.getElementById("kolmogorovProbability") as HTMLInputElement).value)
+  return kolmogorovProbability
+}
+
+function validateKolmogorovSmirnov(numbers:number[]){
+
+  let kolmogorovResult = kolmgorovSmirnov(numbers)
+
+  let kolmogorovDistResult = kolmogorovAt(getKolmogorovProbability(), numbers.length)
+
+  paintKolmogorovResult(kolmogorovResult.results, kolmogorovResult.dPlus, kolmogorovResult.dMinus, kolmogorovDistResult)
+}
+
+
+
+  
 
 //Crear todos los handlers
 // Validar esos numeros aleatorios con pruebas de bondad

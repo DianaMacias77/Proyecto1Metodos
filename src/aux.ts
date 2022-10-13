@@ -1,4 +1,4 @@
-import { gammapinv } from './chisquared'
+import { gammapinv } from './distributions'
 
 export function getMiddleNumber(n: number)
 {
@@ -93,4 +93,9 @@ export function chiSquaredAt(x: number, k: number)
 
 function inv(p:number, dof:number) {
     return 2 * gammapinv(p, 0.5 * dof);
+}
+
+export function kolmogorovAt(a: number, n: number)
+{
+    return Math.sqrt((- Math.log(a / 2)) / 2) / Math.sqrt(n)
 }

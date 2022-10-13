@@ -96,3 +96,10 @@ export class ChiSquaredInterval{
     public result: number
 
 }
+
+export class kolmgorovSmirnovResult{
+    public randomNumber: number
+    public theoricalProbability: number
+    public randomMinusTheorical: number
+    public theoricalMinusRandom: number
+}

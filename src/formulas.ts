@@ -1,4 +1,4 @@
-import { CongruentialInput, CongruentialResult, MixedCongruentialResult, SquaredResult, CombinedCongruentialResult, ChiSquaredInterval } from './class'
+import { CongruentialInput, CongruentialResult, MixedCongruentialResult, SquaredResult, CombinedCongruentialResult, ChiSquaredInterval, kolmgorovSmirnovResult } from './class'
 import { isPrimeRelative, isOnlyMDivisibleByPrime, isOnlyMDivisibleByFour } from './aux'
 
 export function middleSquare(x0: number, n:number) : SquaredResult[] 
@@ -88,21 +88,21 @@ export function combinedCongruential(inputs:CongruentialInput[], n: number) : Co
 export function chiSquared(randomNumbers:number[]){
 
     randomNumbers = randomNumbers.sort()
-    let range = randomNumbers[randomNumbers.length - 1] - randomNumbers[0]
+    //let range = randomNumbers[randomNumbers.length - 1] - randomNumbers[0]
+    let range = 1
     let k = Math.ceil(3.322 * Math.log10(randomNumbers.length))
     let cl = Math.ceil((range / k) / 0.01) * 0.01
     let intervals: ChiSquaredInterval[] = []
 
 
     //create intervals
-    for(let i = 0; i <= k; i++){
+    for(let i = 0; i < k; i++){
         let interval: ChiSquaredInterval = new ChiSquaredInterval()
         interval.min = i === 0 ? 0 : intervals[i - 1].max
         interval.max = interval.min + cl
         interval.values = randomNumbers.filter(x => x >= interval.min && x < interval.max)
         intervals.push(interval)
     }
-
 
     // Merge intervals when the interval has less than 5 values
     for(let i = 1; i < intervals.length; i++){
@@ -137,4 +137,44 @@ export function chiSquared(randomNumbers:number[]){
 
     return {chiSquaredRes, intervals}
 
+}
+
+export function kolmgorovSmirnov(randomNumbers:number[]){
+
+    randomNumbers = randomNumbers.sort()
+    let n = randomNumbers.length
+    let dPlus = 0
+    let dMinus = 0
+
+    let results: kolmgorovSmirnovResult[] = []
+
+    for(let i = 0; i < n; i++){
+
+        let res : kolmgorovSmirnovResult  = new kolmgorovSmirnovResult()
+
+        let randomNumber = randomNumbers[i]
+        let theoricalProbabilityMax = i  / n
+        let theoricalProbabilityMin = (i-1) / n
+
+        res.randomNumber = randomNumber
+        res.theoricalProbability = theoricalProbabilityMax
+
+        let dPlusTemp = Math.abs(theoricalProbabilityMax - randomNumber)
+        let dMinusTemp = Math.abs(randomNumber - theoricalProbabilityMin)
+
+        res.theoricalMinusRandom = dPlusTemp
+        res.randomMinusTheorical = dMinusTemp
+
+        if(dPlusTemp > dPlus){
+            dPlus = dPlusTemp
+        }
+
+        if(dMinusTemp > dMinus){
+            dMinus = dMinusTemp
+        }
+
+        results.push(res)
+    }
+
+    return {dPlus, dMinus, results}
 }
