@@ -160,3 +160,7 @@ tbody tr:nth-child(even) {
 .red{
     color: rgb(209,63,48);
 }
+
+.popup{
+    display: none;
+}

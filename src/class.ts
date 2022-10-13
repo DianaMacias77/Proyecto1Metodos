@@ -90,10 +90,9 @@ export class CombinedCongruentialResult
 export class ChiSquaredInterval{
     public min: number
     public max: number
-    public fo: number
-    public fe: number
-    public c: number
     public values: number[]
-    public probability: number
+    public theoricalProbability: number
+    public theoricalFrequency: number
+    public result: number
 
 }

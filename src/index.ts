@@ -1,12 +1,16 @@
 import { CongruentialInput, CongruentialResult, MixedCongruentialResult, CombinedCongruentialResult ,SquaredResult } from './class'
 import { linealCongruential, middleSquare, mixedCongruential, multiplicationCongruential, combinedCongruential, chiSquared } from './formulas'
-import { paintSquaredResult, paintCongruentialResult, paintMixedCongruentialResult, paintCombinedCongruentialResult } from './view'
+import { paintSquaredResult, paintCongruentialResult, paintMixedCongruentialResult, paintCombinedCongruentialResult, paintChiResult } from './view'
+import { chiSquaredAt } from './aux'
+
 
 //const input = new CongruentialInput(5, 3, 0, 11)
 
 //const results: CongruentialResult[] = multiplicationCongruential(input, 10)
 
-//chiSquared(results.map(result => result.numberRandom))
+const randomNumbers = []
+
+
 
 declare global {
     interface Window {
@@ -15,6 +19,7 @@ declare global {
       mixedCongruentialHandler: Function;
       congruentialMultiplicationHandler: Function;
       combinedCongruentialHandler: Function;
+      openHandler: Function;
     }
 }
 
@@ -37,6 +42,10 @@ function congruentialHandler(){
   let input = new CongruentialInput(seed, a, c, m)
 
   let results:CongruentialResult[] = linealCongruential(input, n)
+
+  if(checkIfChiSquaredChecked()){
+    validateChiSquared(results.map(x => x.numberRandom))    
+  }
 
   paintCongruentialResult(results)
 }
@@ -89,9 +98,27 @@ function combinedCongruentialHandler(){
     }else{
         alert("All the arrays must be the same length as k")
     }
+}
 
-    
+function checkIfChiSquaredChecked():boolean{
+  let chiSquaredCheck = (document.getElementById("chiSquaredCheck") as HTMLInputElement).checked
+  return chiSquaredCheck
+}
 
+function validateChiSquared(numbers:number[]){
+
+  let chiResult = chiSquared(numbers)
+
+  let chiDistResult = chiSquaredAt(getChiProbability(), numbers.length - 1,)
+
+  paintChiResult(chiResult.intervals, chiResult.chiSquaredRes, chiDistResult)
+
+  //alert(`Chi Squared Result: ${chiResult.chiSquaredRes} Chi Squared At: ${chiDistResult} Result: ${result}`)
+}
+
+function getChiProbability(){
+  let chiProbability = parseFloat((document.getElementById("chiProbability") as HTMLInputElement).value)
+  return chiProbability
 }
 
 //Crear todos los handlers

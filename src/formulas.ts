@@ -86,37 +86,55 @@ export function combinedCongruential(inputs:CongruentialInput[], n: number) : Co
 }
 
 export function chiSquared(randomNumbers:number[]){
+
     randomNumbers = randomNumbers.sort()
     let range = randomNumbers[randomNumbers.length - 1] - randomNumbers[0]
-    let k = Math.floor(1 + 3.322 * Math.log10(randomNumbers.length))
-    let cl = range / k
+    let k = Math.ceil(3.322 * Math.log10(randomNumbers.length))
+    let cl = Math.ceil((range / k) / 0.01) * 0.01
     let intervals: ChiSquaredInterval[] = []
 
-    console.log(k)
-    console.log(randomNumbers)
 
     //create intervals
-    for(let i = 0; i < k; i++){
+    for(let i = 0; i <= k; i++){
         let interval: ChiSquaredInterval = new ChiSquaredInterval()
-        interval.min = i === 0 ? randomNumbers[0] : intervals[i - 1].max
+        interval.min = i === 0 ? 0 : intervals[i - 1].max
         interval.max = interval.min + cl
         interval.values = randomNumbers.filter(x => x >= interval.min && x < interval.max)
         intervals.push(interval)
     }
 
+
     // Merge intervals when the interval has less than 5 values
-    for(let i = 0; i < intervals.length; i++){
-        if(intervals[i].values.length < 5){
-            intervals[i - 1].values = intervals[i - 1].values.concat(intervals[i].values)
-            intervals[i - 1].max = intervals[i].max
-            intervals.splice(i, 1)
-            i--
+    for(let i = 1; i < intervals.length; i++){
+        if(intervals[i - 1].values.length < 5){
+            intervals[i].values = intervals[i].values.concat(intervals[i-1].values)
+            intervals[i].min = intervals[i - 1].min
+            intervals.splice((i - 1), 1)
+            i = 0
         }
     }
 
-    //Calcualate probability for each interval using uniform distribution
+
+    //Calcualate the real probability for each interval using uniform distribution
+    let accProbability = 0
     intervals.forEach(interval => {
-        interval.probability = interval.values.length / randomNumbers.length
+        let theoricalProbability = (interval.max) - accProbability
+        interval.theoricalProbability = theoricalProbability
+        interval.theoricalFrequency = theoricalProbability * randomNumbers.length
+        accProbability += interval.theoricalProbability
     })
+
+    let chiSquaredRes:number = 0
+
+    intervals.forEach(interval => {
+        
+        let oi = interval.values.length
+        let ei = interval.theoricalFrequency
+        let res = Math.pow((oi - ei), 2) / ei
+        interval.result = res
+        chiSquaredRes += res
+    })
+
+    return {chiSquaredRes, intervals}
 
 }

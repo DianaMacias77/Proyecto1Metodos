@@ -1,3 +1,5 @@
+import { gammapinv } from './chisquared'
+
 export function getMiddleNumber(n: number)
 {
     let numberString: string = n.toString()
@@ -81,4 +83,14 @@ function isPrime(n: number): boolean{
         }
     }
     return isPrime
+}
+
+export function chiSquaredAt(x: number, k: number)
+{
+    return inv(1 - x, k)
+}
+    
+
+function inv(p:number, dof:number) {
+    return 2 * gammapinv(p, 0.5 * dof);
 }

@@ -8,6 +8,6 @@
   },
   "scripts": {
     "build": "webpack --config webpack.config.js",
-    "watch": "watch 'npm run build'"
+    "watch": "webpack --config webpack.config.js --watch"
   }
 }

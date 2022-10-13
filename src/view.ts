@@ -1,4 +1,4 @@
-import { SquaredResult, CongruentialResult, MixedCongruentialResult, CombinedCongruentialResult } from "./class";
+import { SquaredResult, CongruentialResult, MixedCongruentialResult, CombinedCongruentialResult, ChiSquaredInterval } from "./class";
 
 export function paintSquaredResult(results : SquaredResult[]) : void{
 
@@ -239,4 +239,66 @@ export function paintCombinedCongruentialResult(results : CombinedCongruentialRe
 
         document.getElementById("tableBody").appendChild(row)
     });
+}
+
+
+export function paintChiResult(interval: ChiSquaredInterval[], calcChiResult: number, theoricalChiResult: number){
+
+    let result = calcChiResult < theoricalChiResult
+
+    document.getElementById("chiTableBody").innerHTML = "";
+
+    interval.forEach( (int, index) => {
+        let row = document.createElement("tr")
+
+        let indexCol = document.createElement("td")
+        let indexText = document.createTextNode((index + 1).toString())
+        indexCol.appendChild(indexText)
+        row.appendChild(indexCol)
+
+        let intervalCol = document.createElement("td")
+        let intervalText = document.createTextNode(`${int.min.toFixed(4)} - ${int.max.toFixed(4)}`)
+        intervalCol.appendChild(intervalText)
+        row.appendChild(intervalCol)
+
+        let oiCol = document.createElement("td")
+        let oiText = document.createTextNode(int.values.length.toString())
+        oiCol.appendChild(oiText)
+        row.appendChild(oiCol)
+
+        let probCol = document.createElement("td")
+        let probText = document.createTextNode(int.theoricalProbability.toFixed(4).toString())
+        probCol.appendChild(probText)
+        row.appendChild(probCol)
+
+        let eiCol = document.createElement("td")
+        let eiText = document.createTextNode(int.theoricalFrequency.toFixed(4).toString())
+        eiCol.appendChild(eiText)
+        row.appendChild(eiCol)
+
+        let resCol = document.createElement("td")
+        let resText = document.createTextNode(int.result.toFixed(4).toString())
+        resCol.appendChild(resText)
+        row.appendChild(resCol)
+
+        document.getElementById("chiTableBody").appendChild(row)
+    })
+
+    document.getElementById("chiConclusion").innerHTML = "";
+
+    let resultCalc = document.createElement("p")
+    let resultCalcText = document.createTextNode(`El resultado de Chi Calculado es: ${calcChiResult.toFixed(4)}`)
+    resultCalc.appendChild(resultCalcText)
+    document.getElementById("chiConclusion").appendChild(resultCalc)
+
+    let resultTheo = document.createElement("p")
+    let resultTheoText = document.createTextNode(`El resultado de Chi Teórico es: ${theoricalChiResult.toFixed(4)}`)
+    resultTheo.appendChild(resultTheoText)
+    document.getElementById("chiConclusion").appendChild(resultTheo)
+
+    let resultFinal = document.createElement("h4")
+    let resultText:string = `<span class="${result ? "green" : "red"}"> &#11044; </span> <strong>${calcChiResult.toFixed(4)} ${result ? "<" : "≰"} ${theoricalChiResult.toFixed(4)}</strong> `
+    resultFinal.innerHTML = resultText
+    document.getElementById("chiConclusion").appendChild(resultFinal)
+
 }
