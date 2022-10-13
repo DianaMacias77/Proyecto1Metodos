@@ -76,11 +76,11 @@ function mixedCongruentialHandler(){
     let results:MixedCongruentialResult = mixedCongruential(input, n)
 
     if(checkIfChiSquaredChecked()){
-      validateChiSquared(results.map(x => x.numberRandom))    
+      validateChiSquared(results.result.map(x => x.numberRandom))    
     }
   
     if(checkIfKolmogorovSmirnovChecked()){
-      validateKolmogorovSmirnov(results.map(x => x.numberRandom))
+      validateKolmogorovSmirnov(results.result.map(x => x.numberRandom))
     }  
     paintMixedCongruentialResult(results, a, m)
     
