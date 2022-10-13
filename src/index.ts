@@ -75,7 +75,15 @@ function mixedCongruentialHandler(){
   
     let results:MixedCongruentialResult = mixedCongruential(input, n)
 
+    if(checkIfChiSquaredChecked()){
+      validateChiSquared(results.map(x => x.numberRandom))    
+    }
+  
+    if(checkIfKolmogorovSmirnovChecked()){
+      validateKolmogorovSmirnov(results.map(x => x.numberRandom))
+    }  
     paintMixedCongruentialResult(results, a, m)
+    
 }
 
 function congruentialMultiplicationHandler(){
